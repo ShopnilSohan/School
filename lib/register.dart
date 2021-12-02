@@ -32,6 +32,7 @@ class _MyRegisterState extends State<MyRegister> {
   String? name = stdin.readLineSync();
   String? email = stdin.readLineSync();
   String? pass = stdin.readLineSync();
+  int _radiovalue=0;
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -149,32 +150,86 @@ class _MyRegisterState extends State<MyRegister> {
                             ),
                           ),
                           SizedBox(height:20 ,),
+                          Row(
+                           children: [
+                             Row(
+                               children: [
+                                 Radio(
+                                   activeColor: Colors.pink,
+                                     value: 1,
+                                     groupValue: _radiovalue,
+                                     onChanged: (value){
+                                       setState(() {
+                                         _radiovalue = value as int;
+                                       });
+                                     }),
+                                 Text('Male',style: TextStyle(color: Colors.white,fontSize: 20
+                                 ),)
+                               ],
+                             ),
+                             Row(
+                               children: [
+                                 Radio(
+                                     activeColor: Colors.pink,
+                                     value: 2,
+                                     groupValue: _radiovalue,
+                                     onChanged: (value){
+                                       setState(() {
+                                         _radiovalue = value as int;
+                                       });
+                                     }),
+                                 Text('Female',style: TextStyle(color: Colors.white,fontSize: 20),)
+                               ],
+                             ),
+                             Row(
+                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                               children: [
+                                 Radio(
+                                     activeColor: Colors.pink,
+                                     value: 3,
+                                     groupValue: _radiovalue,
+                                     onChanged: (value){
+                                       setState(() {
+                                         _radiovalue = value as int;
+                                       });
+                                     }),
+                                 Text('Others',style: TextStyle(color: Colors.white,fontSize: 20),)
+                               ],
+                             ),
+                           ],
+
+                          ),
+                            SizedBox(height:20,),
                           Container(
-                            height: 60,
                             decoration: BoxDecoration(
-                                border: Border.all(width: 1,color: Colors.white),
+                              border: Border.all(width: 1,color: Colors.white,),
                               borderRadius: BorderRadius.circular(10),
 
                             ),
-
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Flexible(child: _dateTime==null? Text('DD-MM-YYYY',style: TextStyle(color: Colors.white),):  Text('Date : ${_dateTime!.day}-${_dateTime!.month}-${_dateTime!.year}',style: TextStyle(color: Colors.white),)
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 12.0),
-                                  child: Flexible(child: IconButton(onPressed: (){
-                                    getDate();
-                                  },
-                                      icon: Icon(Icons.date_range_sharp,color: Colors.white,))),
-                                )
-                              ],
-                            ),
+                                Row(
+                                  children: [
+                                    Container(
+                                      height: 60,
+                                      width:250 ,
 
+                                      child: _dateTime==null? TextField(
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none
+                                        ),
+                                      ): Text('${_dateTime!.day}-${_dateTime!.month}-${_dateTime!.day}'),
+                                    ),
+                                  ],
+                                ),
+                                IconButton(
+                                    onPressed:(){
+                                      getDate();
+                                    }, icon: Icon(Icons.date_range),
+                                )
+                              ]
+                            ),
                           ),
                           SizedBox(
                             height: 20,
@@ -221,6 +276,7 @@ class _MyRegisterState extends State<MyRegister> {
                                 child: IconButton(
                                   color: Colors.white,
                                   onPressed: () {
+                                    gender();
                                     if (firstnameController.text.isEmpty || surenameController.text.isEmpty ||
                                         emailController.text.isEmpty ||
                                         passController.text.isEmpty) {
@@ -283,5 +339,24 @@ class _MyRegisterState extends State<MyRegister> {
         ),
       ),
     );
+  }
+  gender(){
+    if(_radiovalue==1){
+      Fluttertoast.showToast(msg: 'Male',toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR);
+    }
+    else if(_radiovalue==2){
+      Fluttertoast.showToast(msg: 'Female',toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR);
+    }
+    else if(_radiovalue==3){
+      Fluttertoast.showToast(msg: 'Others',toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR);
+    }
+    else{
+      Fluttertoast.showToast(msg: 'Please Select your gender',toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR);
+    }
+
   }
 }
