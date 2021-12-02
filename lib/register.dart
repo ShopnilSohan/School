@@ -1,3 +1,4 @@
+import 'dart:html';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -33,6 +34,8 @@ class _MyRegisterState extends State<MyRegister> {
   String? email = stdin.readLineSync();
   String? pass = stdin.readLineSync();
   int _radiovalue=0;
+  List<String> _country=['Bangladesh', 'India'];
+  String? SelectCountry;
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -181,10 +184,31 @@ class _MyRegisterState extends State<MyRegister> {
                                  Text('Female',style: TextStyle(color: Colors.white,fontSize: 20),)
                                ],
                              ),
+                             Container(
+                               child: DropdownButton(
+                                 hint: Text('please select country'),
+                                 value: SelectCountry,
+                                 onChanged: (newValue){
+                                   setState(() {
+                                     SelectCountry=newValue.toString();
+                                   });
+
+                                 },
+                                 items:
+                                   _country.map((_country){
+                                     return DropdownMenuItem(
+                                       child: new Text(_country),
+                                       value: _country,
+                                     );
+                                   }).toList(),
+
+                               ),
+                             ),
                              Row(
                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                children: [
                                  Radio(
+
                                      activeColor: Colors.pink,
                                      value: 3,
                                      groupValue: _radiovalue,
