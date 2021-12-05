@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:school/dashboard.dart';
+import 'package:school/profile.dart';
 import 'package:school/register.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:school/resetpass.dart';
@@ -116,7 +117,7 @@ class _MyLoginState extends State<MyLogin> {
         style: ButtonStyle(),
         ),
         TextButton(onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>Resetpass()));
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>MyProfile()));
         },
         child: Text('Forgot Password',style: TextStyle( decoration: TextDecoration.underline,
          color: Color(0xff4c505b),fontSize: 18,

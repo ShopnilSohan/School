@@ -1,10 +1,10 @@
-import 'dart:html';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:school/login.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyRegister extends StatefulWidget {
   const MyRegister({Key? key}) : super(key: key);
@@ -15,17 +15,18 @@ class MyRegister extends StatefulWidget {
 
 class _MyRegisterState extends State<MyRegister> {
   DateTime? _dateTime;
-  getDate() async{
+  getDate() async {
     DateTime? date = await showDatePicker(
       context: context,
       initialDate: DateTime(DateTime.now().year),
-      firstDate: DateTime(DateTime.now().year-50),
-      lastDate: DateTime(DateTime.now().year+10),
+      firstDate: DateTime(DateTime.now().year - 50),
+      lastDate: DateTime(DateTime.now().year + 10),
     );
     setState(() {
-      _dateTime=date!;
+      _dateTime = date!;
     });
   }
+
   TextEditingController firstnameController = TextEditingController();
   TextEditingController surenameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -33,9 +34,12 @@ class _MyRegisterState extends State<MyRegister> {
   String? name = stdin.readLineSync();
   String? email = stdin.readLineSync();
   String? pass = stdin.readLineSync();
-  int _radiovalue=0;
-  List<String> _country=['Bangladesh', 'India'];
+  int _radiovalue = 0;
+  List<String> _country = ['Bangladesh', 'India'];
   String? SelectCountry;
+
+  @override
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -51,18 +55,18 @@ class _MyRegisterState extends State<MyRegister> {
           backgroundColor: Colors.transparent,
           elevation: 0,
         ),
-        body: Stack(
-          children: [
-            Container(
-              padding: EdgeInsets.only(left: 35, top: 30),
-              child: Text(
-                'Create\nAccount',
-                style: TextStyle(color: Colors.white, fontSize: 33),
+        body: SingleChildScrollView(
+          child: Stack(
+            children: [
+              Container(
+                padding: EdgeInsets.only(left: 35, top: 30),
+                child: Text(
+                  'Create\nAccount',
+                  style: TextStyle(color: Colors.white, fontSize: 33),
+                ),
               ),
-            ),
-            SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.only(top: height * 0.213),
+              Container(
+                padding: EdgeInsets.only(top: height * 0.2),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -152,108 +156,141 @@ class _MyRegisterState extends State<MyRegister> {
                               ),
                             ),
                           ),
-                          SizedBox(height:20 ,),
-                          Row(
-                           children: [
-                             Row(
-                               children: [
-                                 Radio(
-                                   activeColor: Colors.pink,
-                                     value: 1,
-                                     groupValue: _radiovalue,
-                                     onChanged: (value){
-                                       setState(() {
-                                         _radiovalue = value as int;
-                                       });
-                                     }),
-                                 Text('Male',style: TextStyle(color: Colors.white,fontSize: 20
-                                 ),)
-                               ],
-                             ),
-                             Row(
-                               children: [
-                                 Radio(
-                                     activeColor: Colors.pink,
-                                     value: 2,
-                                     groupValue: _radiovalue,
-                                     onChanged: (value){
-                                       setState(() {
-                                         _radiovalue = value as int;
-                                       });
-                                     }),
-                                 Text('Female',style: TextStyle(color: Colors.white,fontSize: 20),)
-                               ],
-                             ),
-                             Container(
-                               child: DropdownButton(
-                                 hint: Text('please select country'),
-                                 value: SelectCountry,
-                                 onChanged: (newValue){
-                                   setState(() {
-                                     SelectCountry=newValue.toString();
-                                   });
-
-                                 },
-                                 items:
-                                   _country.map((_country){
-                                     return DropdownMenuItem(
-                                       child: new Text(_country),
-                                       value: _country,
-                                     );
-                                   }).toList(),
-
-                               ),
-                             ),
-                             Row(
-                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                               children: [
-                                 Radio(
-
-                                     activeColor: Colors.pink,
-                                     value: 3,
-                                     groupValue: _radiovalue,
-                                     onChanged: (value){
-                                       setState(() {
-                                         _radiovalue = value as int;
-                                       });
-                                     }),
-                                 Text('Others',style: TextStyle(color: Colors.white,fontSize: 20),)
-                               ],
-                             ),
-                           ],
-
+                          SizedBox(
+                            height: 20,
                           ),
-                            SizedBox(height:20,),
+                          Row(
+                            children: [
+                              Row(
+                                children: [
+                                  Radio(
+                                      activeColor: Colors.pink,
+                                      value: 1,
+                                      groupValue: _radiovalue,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _radiovalue = value as int;
+                                        });
+                                      }),
+                                  Text(
+                                    'Male',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Radio(
+                                      activeColor: Colors.pink,
+                                      value: 2,
+                                      groupValue: _radiovalue,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _radiovalue = value as int;
+                                        });
+                                      }),
+                                  Text(
+                                    'Female',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Radio(
+                                      activeColor: Colors.pink,
+                                      value: 3,
+                                      groupValue: _radiovalue,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _radiovalue = value as int;
+                                        });
+                                      }),
+                                  Text(
+                                    'Others',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            height: 70,
+                            width: 320,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Colors.white,
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Center(
+                              child: DropdownButton(
+                                hint: Text(
+                                  'please select country',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 25),
+                                ),
+                                value: SelectCountry,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    SelectCountry = newValue.toString();
+                                  });
+                                },
+                                items: _country.map((_country) {
+                                  return DropdownMenuItem(
+                                    child: new Text(_country),
+                                    value: _country,
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
                           Container(
                             decoration: BoxDecoration(
-                              border: Border.all(width: 1,color: Colors.white,),
+                              border: Border.all(
+                                width: 1,
+                                color: Colors.white,
+                              ),
                               borderRadius: BorderRadius.circular(10),
-
                             ),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      height: 60,
-                                      width:250 ,
-
-                                      child: _dateTime==null? TextField(
-                                        decoration: InputDecoration(
-                                          border: InputBorder.none
-                                        ),
-                                      ): Text('${_dateTime!.day}-${_dateTime!.month}-${_dateTime!.day}'),
-                                    ),
-                                  ],
-                                ),
-                                IconButton(
-                                    onPressed:(){
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        height: 60,
+                                        width: 250,
+                                        child: _dateTime == null
+                                            ? TextField(
+                                                decoration: InputDecoration(
+                                                    border: InputBorder.none),
+                                              )
+                                            : Text(
+                                                '${_dateTime!.day}-${_dateTime!.month}-${_dateTime!.day}'),
+                                      ),
+                                    ],
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
                                       getDate();
-                                    }, icon: Icon(Icons.date_range),
-                                )
-                              ]
-                            ),
+                                    },
+                                    icon: Icon(Icons.date_range),
+                                  )
+                                ]),
                           ),
                           SizedBox(
                             height: 20,
@@ -300,8 +337,11 @@ class _MyRegisterState extends State<MyRegister> {
                                 child: IconButton(
                                   color: Colors.white,
                                   onPressed: () {
+
+                                    setSharedPref();
                                     gender();
-                                    if (firstnameController.text.isEmpty || surenameController.text.isEmpty ||
+                                    if (firstnameController.text.isEmpty ||
+                                        surenameController.text.isEmpty ||
                                         emailController.text.isEmpty ||
                                         passController.text.isEmpty) {
                                       Fluttertoast.showToast(
@@ -358,29 +398,41 @@ class _MyRegisterState extends State<MyRegister> {
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
-  gender(){
-    if(_radiovalue==1){
-      Fluttertoast.showToast(msg: 'Male',toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.SNACKBAR);
-    }
-    else if(_radiovalue==2){
-      Fluttertoast.showToast(msg: 'Female',toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.SNACKBAR);
-    }
-    else if(_radiovalue==3){
-      Fluttertoast.showToast(msg: 'Others',toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.SNACKBAR);
-    }
-    else{
-      Fluttertoast.showToast(msg: 'Please Select your gender',toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.SNACKBAR);
-    }
 
+  gender() {
+    if (_radiovalue == 1) {
+      Fluttertoast.showToast(
+          msg: 'Male',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR);
+    } else if (_radiovalue == 2) {
+      Fluttertoast.showToast(
+          msg: 'Female',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR);
+    } else if (_radiovalue == 3) {
+      Fluttertoast.showToast(
+          msg: 'Others',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR);
+    } else {
+      Fluttertoast.showToast(
+          msg: 'Please Select your gender',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR);
+    }
   }
+setSharedPref()async{
+    final pref=await SharedPreferences.getInstance();
+    pref.setString('userfname',firstnameController.text);
+    pref.setString('userlname',surenameController.text);
+    pref.setString('pass',passController.text);
+
+}
 }
